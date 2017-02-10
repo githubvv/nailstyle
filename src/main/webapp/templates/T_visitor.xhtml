@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head jsf:id="head">
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <title>Black And White Bootstrap Landing Page / Portfolio</title>
+        <meta name="description" content=""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="robots" content="all,follow"/>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <!-- Google fonts - Montserrat for headings, Cardo for copy-->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Montserrat:400,700|Cardo:400,400italic,700"/>
+        <!-- theme stylesheet-->
+        <link rel="stylesheet" href="/resources/css/style.default.css" id="theme-stylesheet"/>
+        <!-- ekko lightbox-->
+        <link rel="stylesheet" href="/resources/css/ekko-lightbox.css"/>
+        <!-- Custom stylesheet - for your changes-->
+        <link rel="stylesheet" href="/resources/css/custom.css"/>
+        <!-- Favicon-->
+        <link rel="shortcut icon" href="favicon.png"/>
+    </head>
+    <body jsf:id="body" data-spy="scroll" data-target="#navigation" data-offset="120">
+
+        <ui:insert name="header">
+            <ui:include src="/templateBlocks/visitor/header.xhtml"/>
+        </ui:insert>
+
+        <ui:insert name="content">
+            <ui:include src="/templateBlocks/visitor/content.xhtml"/>
+        </ui:insert>
+
+        <ui:insert name="footer">
+            <ui:include src="/templateBlocks/visitor/footer.xhtml"/>
+        </ui:insert>
+
+        <!-- Javascript files-->
+        <!-- jQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <!-- jQuery Cookie - For Demo Purpose-->
+        <script src="/resources/js/jquery.cookie.js"></script>
+        <!-- Lightbox-->
+        <script src="/resources/js/ekko-lightbox.js"> </script>
+        <!-- Sticky + Scroll To scripts for navbar-->
+        <script src="/resources/js/jquery.sticky.js"></script>
+        <script src="/resources/js/jquery.scrollTo.min.js"></script>
+        <script src="/resources/js/front.js"></script>
+    </body>
+</html>

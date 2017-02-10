@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource name="jdbc/nailstyle"
+              auth="Container"
+              type="com.mchange.v2.c3p0.ComboPooledDataSource"
+              factory="org.apache.naming.factory.BeanFactory"
+              user="**************"
+              password="*************"
+              jdbcUrl="jdbc:h2:/var/lib/db/nailstyle"
+              driverClass="org.h2.Driver"
+              minPoolSize="2"
+              initialPoolSize="10"
+              maxPoolSize="50"
+              idleConnectionTestPeriod="600"
+              acquireRetryAttempts="30"/>
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+           userTable="users"
+           userNameCol="user_name"
+           userCredCol="user_pass"
+           userRoleTable="user_roles"
+           roleNameCol="role_name"
+           localDataSource="true"
+           dataSourceName="jdbc/nailstyle"/>
+</Context>

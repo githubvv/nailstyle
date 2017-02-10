@@ -1,0 +1,49 @@
+#wrap {
+    position: relative;
+    width: 940px;
+    margin: 0 auto;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+}
+
+.content {
+    overflow: hidden;
+    margin-top: 27px;
+    background: rgba(0, 0, 0, 0.53);
+    border-radius: 5px;
+}
+
+.error-div {
+    height: 100px;
+    padding: 50px;
+    text-align: center;
+}
+
+#title{
+    font-size: 30px;
+    color: white;
+}
+
+#title-ico{
+    color: #ffffff;
+    margin-left: 30px;
+    position: absolute;
+
+}
+
+.error-div form {
+    margin: 20px;
+    text-align: center;
+}
+
+.error-div label {
+    font-size: 50px;
+    color: #fbfbfb;
+}
+
+a#error-form\:gohome-link {
+    text-decoration: none;
+    color: #fbfbfb;
+    text-decoration: underline;
+}

@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+                lang="en" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:insert name="page">
+        <div jsf:id="article-block">
+            <ui:include src="/templateBlocks/admin/editArticle.xhtml"/>
+        </div>
+        <div jsf:id="gallery-block">
+            <ui:include src="/templateBlocks/admin/editGallery.xhtml"/>
+        </div>
+        <div jsf:id="priceItem-block">
+            <ui:include src="/templateBlocks/admin/editPriceList.xhtml"/>
+        </div>
+        <div jsf:id="mail-block">
+            <ui:include src="/templateBlocks/admin/mail.xhtml"/>
+        </div>
+    </ui:insert>
+
+</ui:composition>

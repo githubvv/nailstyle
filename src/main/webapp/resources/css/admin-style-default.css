@@ -1,0 +1,36 @@
+.btnAfterPageNav{
+    margin-left: 15px;
+}
+
+.btn-act{
+    margin-right: 10px;
+}
+
+.admin-textArea{
+    resize: none;
+}
+
+.article-files:hover{
+    color: #555;
+    background-color: #e7e7e7;
+}
+
+.article-files-item a{
+    color: #777;
+}
+
+.gallery-img{
+    height: 350px;
+}
+
+
+.article-text img{
+    width: 30%;
+}
+
+.img-in-update-window{
+    margin: 10px;
+}
+
+
+

@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <section id="portfolio" class="gallery">
+        <div class="container clearfix">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-8">
+                            <h2 class="heading">Мои работы</h2>
+                            <p>Мода на маникюр набирает все больших оборотов и мастера придумывают все новые технологии и варианты выполнения. В первую очередь, я всегда стараюсь, чтобы от моей работы оставались только положительные впечатления и, как следствие, отзывы и рекомендации другим людям. Время от времени я фотографирую и выставляю свои работы.  </p>
+                        </div>
+                    </div>
+                    <form jsf:id="user-gallery-form">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <h:commandLink action="#{galleryController.pageNavigator.prevPage()}">Назад
+                                        <f:ajax execute="@this" render="@form"/>
+                                    </h:commandLink>
+                                </li>
+                                <ui:repeat var="page" value="#{galleryController.pageNavigator.pageNumbers}" varStatus="varStatus">
+                                    <li>
+                                        <h:commandLink style="#{(galleryController.pageNavigator.selectedPageNumber == varStatus.index+1)?'color: #444444; background-color: #919191; border-color: #dddddd;':''}">#{page}
+                                            <f:setPropertyActionListener value="#{page}"
+                                                                         target="#{galleryController.pageNavigator.selectedPageNumber}"/>
+                                            <f:ajax execute="@this" render="@form"/>
+                                        </h:commandLink>
+                                    </li>
+                                </ui:repeat>
+                                <li>
+                                    <h:commandLink action="#{galleryController.pageNavigator.nextPage()}">Далее
+                                        <f:ajax execute="@this" render="@form"/>
+                                    </h:commandLink>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="row">
+                            <ui:repeat value="#{galleryController.galleryList}" var="image">
+                                <div class="col-sm-4">
+                                    <div class="box"><a jsf:value="#{galleryController.getFullPath()}/#{image.path}" title="" data-toggle="lightbox" data-gallery="portfolio" data-title="#{image.name}" data-footer=""><img src="#{galleryController.getFullPath()}/#{image.path}" alt="" class="img-responsive"/></a></div>
+                                </div>
+                            </ui:repeat>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+     </section>
+</ui:composition>

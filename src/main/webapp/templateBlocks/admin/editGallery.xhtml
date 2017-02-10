@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+	lang="en" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<ui:fragment id="gallery-fragment"
+		rendered="#{adminNavigationController.pathName eq 'gallery'}">
+		<h1>ГАЛЕРЕЯ</h1>
+		<form jsf:id="gallery-form">
+			<ui:fragment id="add-gallery-fragment"
+				rendered="#{!adminGalleryController.addModeView and !adminGalleryController.editModeView and !adminGalleryController.confirmModeView}">
+                <nav aria-label="Page navigation" class="admin-nav">
+                    <ul class="pagination">
+                        <li>
+                            <h:commandLink action="#{adminGalleryController.pageNavigator.prevPage()}">Назад
+                                <f:ajax execute="@this" render="@form"/>
+                            </h:commandLink>
+                        </li>
+                        <ui:repeat var="page" value="#{adminGalleryController.pageNavigator.pageNumbers}" varStatus="varStatus">
+                            <li>
+                                <h:commandLink
+                                        style="#{(adminGalleryController.pageNavigator.selectedPageNumber == varStatus.index+1)?'color: #444444; background-color: #919191; border-color: #dddddd;':''}">#{page}
+                                    <f:setPropertyActionListener value="#{page}"
+                                                                 target="#{adminGalleryController.pageNavigator.selectedPageNumber}"/>
+                                    <f:ajax execute="@this" render="@form"/>
+                                </h:commandLink>
+                            </li>
+                        </ui:repeat>
+                        <li>
+                            <h:commandLink action="#{adminGalleryController.pageNavigator.nextPage()}">Далее
+                                <f:ajax execute="@this" render="@form"/>
+                            </h:commandLink>
+                        </li>
+                        <li style="float: left;">
+                            <div id="add-articles-block">
+                                <button jsf:id="addNem-button"
+                                        jsf:action="#{adminGalleryController.switchAddMode}"
+                                        class="flatbtn-blu btnAfterPageNav">
+                                    <f:setPropertyActionListener value="#{null}" target="#{adminGalleryController.fileFull}"/>
+                                    Добавить
+                                    <f:ajax execute="@this" render="@form :file-upload-block :upload-file-form"/>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+			</ui:fragment>
+			<ui:fragment id="gallery-table-fragment"
+				rendered="#{!adminGalleryController.addModeView and !adminGalleryController.editModeView and !adminGalleryController.confirmModeView}">
+                <div id="gallery-list-block">
+					<ui:repeat var="gallery"
+						value="#{adminGalleryController.getGalleryList()}">
+                        <p/>
+                        <legend/>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-12">
+                                    <span>ID: #{gallery.id}</span> <span>Дата: #{gallery.date}</span>
+                                </div>
+                                <div class="col-sm-12 img-block">
+                                    <img src="#{adminGalleryController.getFullPath()}/#{gallery.path}" class="gallery-img"/>
+                                </div>
+                                <div class="row">
+                                    <button jsf:id="gallery-remove-button"
+                                            jsf:action="#{adminGalleryController.switchRemoveMode}"
+                                            class="btn-act">
+                                        Удалить
+                                        <f:ajax execute="@form" render="@form" immediate="true" />
+                                        <f:setPropertyActionListener value="#{gallery}"
+                                                                     target="#{adminGalleryController.selectedObject}" />
+                                    </button>
+                                    <button jsf:id="gallery-update-button"
+                                            jsf:action="#{adminGalleryController.switchEditMode}"
+                                            class="btn-act">
+                                        Изменить
+                                        <f:ajax execute="@form"
+                                                render="@form :file-upload-block :upload-file-form"
+                                                immediate="true" />
+                                        <f:setPropertyActionListener value="#{gallery}"
+                                                                     target="#{adminGalleryController.selectedObject}" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+					</ui:repeat>
+				</div>
+			</ui:fragment>
+			<ui:fragment id="gallery-confirm-dialog-fragment"
+				rendered="#{adminGalleryController.confirmModeView}">
+				<div id="gallery-confirm-dialog-block"
+					class="view-selected-block confirm-dialog-block">
+						<span>Вы уверены?</span>
+						<button jsf:id="confirm-button"
+							jsf:action="#{adminGalleryController.doDBActions}" style="margin-left: 15px;" class="btn-act">
+							OK
+							<f:ajax execute="@this" render="@form" immediate="true" />
+						</button>
+
+						<button jsf:id="gallery-confirm-fragment-cancel-btn"
+							jsf:action="#{adminGalleryController.switchConfirmMode(false)}"
+							class="btn-act">
+							Отмена
+							<f:ajax execute="@this" render="@form :file-upload-block :upload-file-form"
+                                    immediate="true" />
+						</button>
+				</div>
+                <div jsf:id="gallery-messages">
+                    <h:messages/>
+                </div>
+			</ui:fragment>
+			<ui:fragment id="gallery-update-mode-fragment"
+				rendered="#{(adminGalleryController.addModeView or adminGalleryController.editModeView) and !adminGalleryController.confirmModeView}">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <label for="name-selectedGallery">Наименование:</label>
+                            <input jsf:id="name-selectedGallery" jsf:value="#{adminGalleryController.selectedObject.name}" type="text" class="form-control"/>
+                        </div>
+                        <div class='col-sm-6'>
+                            <label for="date-selectedGallery">Дата:</label>
+                            <div id="datetimepickerGallery" class="input-append date">
+                                <input jsf:id="date-selectedGallery" jsf:value="#{adminGalleryController.selectedObject.date}" data-format="dd.MM.yyyy" type="text" style="float: left">
+                                    <f:converter converterId="converter.date"></f:converter>
+                                </input>
+                                <span class="add-on" style="float: left; margin-left: 3px;"><i class="fa fa-calendar fa-2x"></i></span>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function() {
+                                $('#datetimepickerGallery').datetimepicker({
+                                    language: 'ru'
+                                });
+                            });
+                        </script>
+                        <div class="clearfix"/>
+                        <div class="col-sm-6 img-in-update-window">
+                            <img src="#{galleryController.getFullPath()}/#{gallery.path}" class="gallery-img"/>
+                        </div>
+                       <!-- <div class="row" style="margin-top: 10px;">-->
+                            <div class="col-sm-12">
+                                <button jsf:id="update-mode-fragment-ok-btn"
+                                        jsf:action="#{adminGalleryController.switchConfirmMode(true)}"
+                                        class="btn-act">
+                                    Сохранить
+                                    <f:ajax
+                                            execute="date-selectedGallery descr-selectedGallery name-selectedGallery" render="@form :file-upload-block :upload-file-form" />
+                                </button>
+                                <button jsf:id="update-mode-fragment-cancel-btn"
+                                        jsf:action="#{adminGalleryController.cancelGalleryUpdate}"
+                                        jsf:immediate="true" class="btn-act">
+                                    Отмена
+                                    <f:ajax execute="@this" render="@form :file-upload-block :upload-file-form" immediate="true" />
+                                </button>
+                            </div>
+                    </div>
+			</ui:fragment>
+		</form>
+        <p/>
+        <div jsf:id="file-upload-block">
+            <form jsf:id="upload-file-form" jsf:enctype="multipart/form-data"
+                  jsf:rendered="#{(adminGalleryController.addModeView) and !adminGalleryController.confirmModeView}">
+                <div class="file-upload-full">
+                    <label for="choose-file-input-full">Загрузить новое изображение:</label>
+                    <input jsf:id="choose-file-input-full"
+                               jsf:value="#{adminGalleryController.fileFull}" type="file"
+                               form="upload-file-form" class="input-upload flatbtn-blu">
+                    <f:ajax execute="@this" listener="#{adminGalleryController.uploadFileFull()}"
+                            render="@form"/>
+                </input>
+                </div>
+            </form>
+        </div>
+	</ui:fragment>
+</ui:composition>

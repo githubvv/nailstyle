@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+                lang="en" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <form jsf:id="navigator-form">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    Админ - страница
+                </a>
+            </li>
+            <li><a jsf:id="priceLink"
+                   jsf:action="#{adminNavigationController.setPathName('priceItem')}">Прайс-лист
+                <f:ajax execute="@this"
+                        render=":gallery-block :article-block :priceItem-block :priceItem-form :people-block :review-block :mail-block"/>
+            </a></li>
+            <li><a jsf:id="articles-link"
+                   jsf:action="#{adminNavigationController.setPathName('articles')}">Статьи
+                <f:ajax execute="@this"
+                        render=":gallery-block :article-block :articles-form :priceItem-block :people-block :review-block :mail-block"/>
+            </a></li>
+            <li><a jsf:id="gallery-link"
+                   jsf:action="#{adminNavigationController.setPathName('gallery')}"
+                    >Галерея
+                <f:ajax execute="@this"
+                        render=":gallery-block :gallery-form :article-block :priceItem-block :people-block :review-block :mail-block"/>
+            </a></li>
+            <li>
+                <a jsf:id="goout" jsf:action="#{authorization.logout}" class="btn-off">Выйти
+                <f:ajax execute="@this" render="@form"/></a>
+            </li>
+        </ul>
+    </form>
+</ui:composition>

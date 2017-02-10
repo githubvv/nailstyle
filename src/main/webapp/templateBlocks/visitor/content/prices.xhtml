@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <section id="services" style="background-color: #eee">
+        <div class="container">
+            <div class="row services">
+                <div class="col-md-12">
+                    <h2 class="heading">Прайс-лист</h2>
+                     <div class="row">
+                         <div class="col-sm-2">
+                             <div class="box">
+                                 <h6>№</h6>
+                             </div>
+                         </div>
+                         <div class="col-sm-7">
+                             <div class="box">
+                                 <h6>Услуга</h6>
+                             </div>
+                         </div>
+                         <div class="col-sm-3">
+                             <div class="box">
+                                 <h6>Цена</h6>
+                             </div>
+                         </div>
+                     </div>
+                    <ui:repeat value="#{priceListController.priceItem}" var="price" varStatus="priceVarStatus">
+                        <div class="row">
+                        <div class="col-sm-2">
+                            <div class="box">
+                                <p>#{priceVarStatus.index+1}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="box">
+                                <p class="visited-priceItem-name">#{price.nameService}</p><p class="visited-priceItem-descr">#{price.description}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="box">
+                                #{price.price}
+                            </div>
+                        </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+        </div>
+    </section>
+</ui:composition>

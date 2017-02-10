@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <section id="intro" style="background-image: url('/resources/images/ein-steig.jpg');" class="intro">
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="container clearfix">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 col-sm-12">
+                        <p class="italic">Здраствуйте, рада знакомству!</p>
+                        <h1>У Вас не будет второго шанса произвести первое впечатление.</h1>
+                        <p class="italic">Будьте красивы до кончиков своих ногтей.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <header class="header">
+        <div class="sticky-wrapper">
+            <div role="navigation" class="navbar navbar-default">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-btn btn-sm navbar-toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#intro" class="navbar-brand scroll-to"><img src="/resources/images/logoNS.png" alt=""/></a>
+                    </div>
+                    <div id="navigation" class="collapse navbar-collapse navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#intro">Домой</a></li>
+                            <li><a href="#about">Обо мне </a></li>
+                            <li><a href="#services">Прайс-лист</a></li>
+                            <li><a href="#portfolio">Мои работы</a></li>
+                            <li><a href="#text">Интересно знать</a></li>
+                            <li><a href="#contact">Контакты</a></li>
+                            <li>
+                                <div id="loginContainer" class="dropdown animated fadeInDown animation-delay-11" style="margin-top: 10px;">
+                                    <a id="loginLink" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Login</a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-login-box animated flipCenter loginBlock">
+                                        <form jsf:id="loginForm" role="form">
+                                            <p>Login Form</p>
+                                            <div class="form-group">
+                                                <div class="input-group login-input">
+                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                    <input jsf:id="login-input" jsf:value="#{authorization.userName}" name="app_username"  type="text" class="form-control" placeholder="Username" required="true"/>
+                                                </div>
+                                                <br/>
+                                                <div class="input-group login-input">
+                                                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                                    <input jsf:id="password-input" jsf:value="#{authorization.userPassword}" name="app_password" type="password" class="form-control" placeholder="Password" required="true"/>
+                                                </div>
+                                                <button jsf:id="loginBtn" jsf:action="#{authorization.login}" type="submit" style="margin-top: 5px;" class="btn btn-ar btn-primary pull-right">Login</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</ui:composition>

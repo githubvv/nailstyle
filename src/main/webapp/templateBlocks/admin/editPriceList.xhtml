@@ -1,0 +1,161 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+                lang="en" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:fragment id="priceItem-fragment"
+                 rendered="#{adminNavigationController.pathName eq 'priceItem'}">
+        <h1>ПРАЙС-ЛИСТ</h1>
+        <form jsf:id="priceItem-form">
+            <ui:fragment id="pricelist-command-fragment"
+                         rendered="#{!adminPriceListController.addModeView and !adminPriceListController.confirmModeView}">
+                <div id="add-pricelist-block">
+                    <button jsf:id="priceItem-addNem-button"
+                            jsf:action="#{adminPriceListController.switchAddMode}"
+                            jsf:rendered="#{!adminPriceListController.editModeView}"
+                            class="btn-act">
+                        Добавить
+                        <f:ajax execute="@form" render="@form" immediate="true"/>
+                    </button>
+                    <button jsf:id="priceItem-ok-btn"
+                            jsf:action="#{adminPriceListController.switchConfirmMode(true)}"
+                            jsf:rendered="#{adminPriceListController.editModeView}"
+                            class="btn-act">
+                        OK
+                        <f:ajax execute="@form" render="@form"/>
+                    </button>
+
+                    <button jsf:id="priceItem-update-button"
+                            jsf:action="#{adminPriceListController.switchEditMode}"
+                            jsf:rendered="#{!adminPriceListController.editModeView}"
+                            class="btn-act">
+                        Изменить
+                        <f:ajax execute="@form" render="@form" immediate="true"/>
+                    </button>
+                    <button jsf:id="priceItem-cancel-btn"
+                            jsf:action="#{adminPriceListController.cancelActions()}"
+                            class="btn-act"
+                            jsf:rendered="#{adminPriceListController.editModeView}">
+                        Отмена
+                        <f:ajax execute="@form" render="@form" immediate="true"/>
+                    </button>
+                </div>
+            </ui:fragment>
+            <ui:fragment id="pricelist-list-fragment"
+                         rendered="#{!adminPriceListController.confirmModeView}">
+                <table class="table">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>#</th>
+                    <th>ID</th>
+                    <th>Приоритет</th>
+                    <th>Наименование услуги</th>
+                    <th>Описание</th>
+                    <th>Цена</th>
+                    <th>Удалить</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                        <ui:repeat var="priceItem"
+                                   value="#{adminPriceListController.priceList}" varStatus="varStatus">
+                            <tr>
+                                <th scope="row">#{varStatus.index+1}</th>
+                                <td>#{priceItem.id}</td>
+                                <td><input jsf:id="prioritet-priceItem" type="text"
+                                           jsf:value="#{priceItem.prioritet}"
+                                           jsf:readonly="#{adminPriceListController.editModeView or adminPriceListController.addModeView ? false : true}"/></td>
+                                <td><input jsf:id="nameService-priceItem" type="text"
+                                           jsf:value="#{priceItem.nameService}"
+                                           jsf:readonly="#{adminPriceListController.editModeView or adminPriceListController.addModeView ? false : true}"/></td>
+                                <td><input jsf:id="description-priceItem" type="text"
+                                            jsf:value="#{priceItem.description}"
+                                            jsf:readonly="#{adminPriceListController.editModeView or adminPriceListController.addModeView ? false : true}"/></td>
+                                <td> <input jsf:id="price-priceItem" type="text"
+                                            jsf:value="#{priceItem.price}"
+                                            jsf:readonly="#{adminPriceListController.editModeView or adminPriceListController.addModeView ? false : true}"/></td>
+                                <td><a jsf:id="priceItem-remove-link"
+                                       jsf:action="#{adminPriceListController.switchRemoveMode}"
+                                       jsf:rendered="#{!adminPriceListController.editModeView and !adminPriceListController.addModeView}">
+                                    <h:graphicImage value="#{resource['images:removeicon.png']}"
+                                                    class="remove-ico" style="width:22px;"/>
+                                    <f:setPropertyActionListener
+                                            value="#{priceItem}"
+                                            target="#{adminPriceListController.selectedObject}"/>
+                                    <f:ajax
+                                            execute="@this" render="@form" immediate="true"/>
+                                </a></td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </ui:fragment>
+            <ui:fragment id="priceItem-update-mode-fragment"
+                         rendered="#{adminPriceListController.addModeView and !adminPriceListController.confirmModeView}">
+                <p>Добавить новую позицию</p>
+                <div id="view-selectedPriceList-block" class="view-selected-block">
+                    <table class="table">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>Приоритет</th>
+                        <th>Наименование услуги</th>
+                        <th>Описание</th>
+                        <th>Цена</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input jsf:id="prioritet-selectedPriceList" type="text"
+                                       jsf:value="#{adminPriceListController.selectedObject.prioritet}"/></td>
+                            <td><input jsf:id="nameService-selectedPriceList" type="text"
+                                       jsf:value="#{adminPriceListController.selectedObject.nameService}"/></td>
+                            <td><input jsf:id="description-selectedPriceList" type="text"
+                                        jsf:value="#{adminPriceListController.selectedObject.description}"/></td>
+                            <td><input jsf:id="price-selectedPriceList" type="text"
+                                       jsf:value="#{adminPriceListController.selectedObject.price}"/></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="row">
+                        <button jsf:id="update-mode-fragment-ok-btn"
+                                jsf:action="#{adminPriceListController.switchConfirmMode(true)}"
+                                class="btn-act">
+                            Сохранить
+                            <f:ajax
+                                    execute="prioritet-selectedPriceList nameService-selectedPriceList description-selectedPriceList price-selectedPriceList"
+                                    render="@form"/>
+                        </button>
+                        <button jsf:id="update-mode-fragment-cancel-btn"
+                                jsf:action="#{adminPriceListController.cancelModes}"
+                                jsf:immediate="true" class="btn-act">
+                            Отмена
+                            <f:ajax execute="@this" render="@form" immediate="true"/>
+                        </button>
+                    </div>
+                </div>
+            </ui:fragment>
+            <ui:fragment id="priceItem-confirm-fragment"
+                         rendered="#{adminPriceListController.confirmModeView}">
+                <div id="priceItem-confirm-dialog-block"
+                     class="view-selected-block confirm-dialog-block">
+                    <span>Вы уверены?</span>
+                    <button jsf:id="priceItem-confirm-fragment-ok-btn"
+                            jsf:action="#{adminPriceListController.doDBActions()}" style="margin-left: 15px;"
+                            class="btn-act">
+                        OK
+                        <f:ajax execute="@form" render="@form" immediate="true"/>
+                    </button>
+                    <button jsf:id="priceItem-confirm-fragment-cancel-btn"
+                            jsf:action="#{adminPriceListController.switchConfirmMode(false)}"
+                            class="btn-act">
+                        Отмена
+                        <f:ajax execute="@form" render="@form" immediate="true"/>
+                    </button>
+                </div>
+            </ui:fragment>
+            <div jsf:id="priceItem-messages">
+                <h:messages/>
+            </div>
+        </form>
+    </ui:fragment>
+</ui:composition>

@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+                lang="en" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:fragment id="article-fragment"
+             rendered="#{adminNavigationController.pathName eq 'articles'}">
+<form jsf:id="articles-form">
+    <h1>СТАТЬИ</h1>
+    <ui:fragment id="articles-fragment"
+                 rendered="#{!adminArticleController.addModeView and !adminArticleController.editModeView and !adminArticleController.confirmModeView}">
+        <nav aria-label="Page navigation" class="admin-nav">
+            <ul class="pagination">
+                <li>
+                    <h:commandLink action="#{adminArticleController.pageNavigator.prevPage()}">Назад
+                        <f:ajax execute="@this" render="@form"/>
+                    </h:commandLink>
+                </li>
+                <ui:repeat var="page" value="#{adminArticleController.pageNavigator.pageNumbers}" varStatus="varStatus">
+                    <li>
+                        <h:commandLink
+                                style="#{(adminArticleController.pageNavigator.selectedPageNumber == varStatus.index+1)?'color: #444444; background-color: #919191; border-color: #dddddd;':''}">#{page}
+                            <f:setPropertyActionListener value="#{page}"
+                                                         target="#{adminArticleController.pageNavigator.selectedPageNumber}"/>
+                            <f:ajax execute="@this" render="@form"/>
+                        </h:commandLink>
+                    </li>
+                </ui:repeat>
+                <li>
+                    <h:commandLink action="#{adminArticleController.pageNavigator.nextPage()}">Далее
+                        <f:ajax execute="@this" render="@form"/>
+                    </h:commandLink>
+                </li>
+                <li style="float: left;">
+                    <div id="add-articles-block">
+                        <button jsf:id="addNem-button"
+                                jsf:action="#{adminArticleController.switchAddMode}"
+                                class="flatbtn-blu btnAfterPageNav">
+                            Добавить
+                            <f:ajax execute="@form" render="@form :article-file-upload-block :article-upload-file-form"
+                                    immediate="true"/>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="clearfix"/>
+        <div jsf:id="articles-list-block" class="articles-list-block">
+            <ui:repeat var="article"
+                       value="#{adminArticleController.getArticleList()}">
+                <p/>
+                <legend/>
+                <div class="row">
+                    <p><span>ID: #{article.id}</span> <span>Наименование: #{article.name}</span> <span>Дата: #{article.date}</span></p>
+                    <p>Краткое описание: #{article.description}</p>
+                    <div class="article-text">Содержание:
+                        <h:outputText value="#{article.text}" escape="false"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <button jsf:id="remove-button"
+                            jsf:action="#{adminArticleController.switchRemoveMode}"
+                            class="btn-act">
+                        Удалить
+                        <f:ajax execute="@form" render="@form :article-file-upload-block" immediate="true"/>
+                        <f:setPropertyActionListener value="#{article}"
+                                                     target="#{adminArticleController.selectedObject}"/>
+                    </button>
+                    <button jsf:id="update-button"
+                            jsf:action="#{adminArticleController.switchEditMode}"
+                            class="btn-act">
+                        Изменить
+                        <f:ajax execute="@this"
+                                render="@form :article-file-upload-block :article-upload-file-form"
+                                immediate="true"/>
+                        <f:setPropertyActionListener value="#{article}"
+                                                     target="#{adminArticleController.selectedObject}"
+                                                     class="btn-act"/>
+                    </button>
+                </div>
+            </ui:repeat>
+        </div>
+    </ui:fragment>
+    <ui:fragment id="view-selectedArticle-fragment"
+                 rendered="#{(adminArticleController.editModeView or adminArticleController.addModeView)and !adminArticleController.confirmModeView}">
+        <div id="view-selectedArticle-block" class="view-selected-block">
+            <div class="row">
+                <div class='col-sm-6'>
+                    <label for="name-selectedArticle">Наименование: </label>
+                    <input jsf:id="name-selectedArticle" type="text" jsf:value="#{adminArticleController.selectedObject.name}" class="form-control"/>
+                </div>
+                <div class='col-sm-6'>
+                    <label for="date-selectedArticle">Дата:</label>
+                    <div id="datetimepickerArticle" class="input-append date">
+                        <input jsf:id="date-selectedArticle" jsf:value="#{adminArticleController.selectedObject.date}" data-format="dd.MM.yyyy" type="text" style="float: left">
+                            <f:converter converterId="converter.date"></f:converter>
+                        </input>
+                        <span class="add-on" style="float: left; margin-left: 3px;"><i class="fa fa-calendar fa-2x"></i></span>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        $('#datetimepickerArticle').datetimepicker({
+                            language: 'ru'
+                        });
+                    });
+                </script>
+            </div>
+            <div class="row">
+                <div class='col-sm-12'>
+                    <label for="descr-selectedArticle">Краткое описание:</label>
+                    <textarea jsf:id="descr-selectedArticle"
+                              jsf:value="#{adminArticleController.selectedObject.description}"
+                              class="form-control admin-textArea" rows="5"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class='col-sm-12'>
+                    <label for="text-selectedArticle">Содержание:</label>
+                    <textarea jsf:id="text-selectedArticle"
+                              jsf:value="#{adminArticleController.selectedObject.text}"
+                              class="form-control admin-textArea" rows="10"/>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-sm-12">
+                    <button jsf:id="update-ok-button"
+                            jsf:action="#{adminArticleController.switchConfirmMode(true)}"
+                            class="btn-act">
+                        Сохранить
+                        <f:ajax execute="@form" render="@form :article-file-upload-block"/>
+                    </button>
+                    <button jsf:id="update-cancel-button"
+                            jsf:action="#{adminArticleController.cancelArticleUpdate()}"
+                            class="btn-act">
+                        Отмена
+                        <f:ajax execute="@form" render="@form :article-file-upload-block" immediate="true"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <p/>
+        <div jsf:id="article-file-nav">
+            <nav class="navbar navbar-default">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Вставить картинку в текст <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <ui:repeat var="currentImage"
+                                       value="#{adminArticleController.selectedObject.articleImgList}"
+                                       varStatus="varStatus">
+                                <li class="article-files">
+                                    <div class="article-files-item" style="height: 35px;">
+                                    <a jsf:id="get-pic#{varStatus.index}"
+                                       jsf:action="#{adminArticleController.pasteImgTag(currentImage.name)}" tabindex="-1"
+                                       class="article-pic-link">#{currentImage.name}
+                                        <f:ajax execute=":articles-form:text-selectedArticle"
+                                                render=":articles-form:text-selectedArticle"/>
+                                    </a>
+                                    <a jsf:id="remove-pic#{varStatus.index}"
+                                                jsf:action="#{adminArticleController.removeImgFromArticle(currentImage)}"
+                                                class="remove-article-pic">Удалить файл
+                                                <f:ajax execute="@this"
+                                                render=":articles-form:article-file-nav :articles-form:text-selectedArticle"
+                                               immediate="true"/>
+                                    </a>
+                                    </div>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </ui:fragment>
+    <ui:fragment id="articles-confirm-dialog-fragment"
+                 rendered="#{adminArticleController.confirmModeView}">
+        <div id="articles-confirm-dialog-block"
+             class="view-selected-block confirm-dialog-block">
+
+            <span>Вы уверены?</span>
+            <button jsf:id="confirm-button"
+                    jsf:action="#{adminArticleController.doDBActions}"
+                    class="btn-act" style="margin-left: 15px;">
+                ОК
+                <f:ajax execute="@form" render="@form :article-file-upload-block" immediate="true"/>
+            </button>
+            <button jsf:id="cancel-button"
+                    jsf:action="#{adminArticleController.switchConfirmMode(false)}"
+                    class="btn-act">
+                Отмена
+                <f:ajax execute="@form" render="@form :article-file-upload-block" immediate="true"/>
+            </button>
+        </div>
+        <div jsf:id="article-messages">
+            <h:messages/>
+        </div>
+    </ui:fragment>
+</form>
+<div jsf:id="article-file-upload-block">
+    <form jsf:id="article-upload-file-form"
+          jsf:enctype="multipart/form-data"
+          jsf:rendered="#{(adminArticleController.editModeView or adminArticleController.addModeView)and !adminArticleController.confirmModeView}">
+        <div class="article-add-file-div">
+            <label for="article-choose-file-input">Загрузить новое изображение:</label>
+            <input jsf:id="article-choose-file-input"
+                   jsf:value="#{adminArticleController.file}" type="file"
+                   form="article-upload-file-form"
+                   class="article-input-upload">
+                <f:ajax execute="@this" listener="#{adminArticleController.uploadFile()}"
+                        render="@form :articles-form:article-file-nav"/>
+            </input>
+        </div>
+    </form>
+</div>
+</ui:fragment>
+</ui:composition>

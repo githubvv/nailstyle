@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+	lang="en" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<ui:fragment id="mail-fragment"
+		rendered="#{adminNavigationController.pathName eq 'mail'}">
+		<ui:repeat var="message" value="#{adminMailController.getMessages()}"
+			varStatus="varStatus">
+			<div>
+				<span class="closeMessage" onclick="closeMessageForm()">X</span>
+				<div id="message-subject">
+					<span>Тема: </span>#{message.subject}
+				</div>
+				<div id="message-sender">
+					<span>Отправитель: </span>#{message.from}
+				</div>
+				<div id="message-dataSent">
+					<span>Дата отправки: </span>#{message.dateSent}
+				</div>
+				<div id="message-content">
+					<span>Текст сообщения: </span>
+					<textarea class="mailTextArea">
+						#{message.content}
+					</textarea>
+				</div>
+			</div>
+		</ui:repeat>
+		<script>
+		$(document).ready(function() {
+			$("#mail-block div").on("click", (function() {
+				$("#mail-block div").each(function(i, elem) {
+					if ($(this).hasClass("active")) {
+						$(this).removeClass("active");
+						return false;
+					}
+				});
+				$(this).closest("#mail-block div").addClass("active");
+			}));
+		});
+		</script>
+	</ui:fragment>
+</ui:composition>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div class="col-md-12">
+        <h2 class="heading">#{articleController.visitedArticle.name}</h2>
+        <p><span>#{articleController.visitedArticle.date}</span></p>
+        <div class="row article-text">
+           <!-- <div class="col-sm-6">
+                <p>Able an hope of body. Any nay shyness article matters own removal nothing his forming. Gay own additions education satisfied the perpetual. If he cause manor happy. Without farther she exposed saw man led. Along on happy could cease green oh. </p>
+                <p>Betrayed cheerful declared end and. Questions we additions is extremely incommode. Next half add call them eat face. Age lived smile six defer bed their few. Had admitting concluded too behaviour him she. Of death to or to being other. </p>
+            </div>
+            <div class="col-sm-6">
+                <p>Effects present letters inquiry no an removed or friends. Desire behind latter me though in. Supposing shameless am he engrossed up additions. My possible peculiar together to. Desire so better am cannot he up before points. Remember mistaken opinions it pleasure of debating. Court front maids forty if aware their at. Chicken use are pressed removed. </p>
+                <p>Saw yet kindness too replying whatever marianne. Old sentiments resolution admiration unaffected its mrs literature. Behaviour new set existence dashwoods. It satisfied to mr commanded consisted disposing engrossed. Tall snug do of till on easy. Form not calm new fail. </p>
+            </div>-->
+            <h:outputText value="#{articleController.visitedArticle.text}" escape="false"/>
+        </div>
+        <div class="row" style="margin-top: 5px;">
+            <form jsf:id="visited-article-form">
+                <button jsf:id="close-opened-article" class="btn btn-default">Закрыть
+                    <f:setPropertyActionListener target="#{articleController.showVisitedArticle}" value="#{false}"/>
+                    <f:ajax execute="@this" render="@form :user-article-form"/>
+                </button>
+            </form>
+        </div>
+    </div>
+</ui:composition>
+  <!--<div>
+        <article>
+
+            <div id="visited-article-name-div">
+                <h2>{articleController.visitedArticle.name}</h2>
+                <span>{articleController.visitedArticle.date}</span>
+            </div>
+            <div id="visited-article-figure-div">
+                <figure>
+                    <figcaption>
+                    </figcaption>
+                </figure>
+                <form jsf:id="visited-article-form">
+                    <a jsf:id="visited-article-close" jsf:action="{articleController.executeEMPTYMethodForPOST}" class="button">Закрыть
+                        <f:setPropertyActionListener target="{articleController.showVisitedArticle}" value="{false}"/>
+                        <f:ajax execute="@this" render="@form :user-article-form"/>
+                    </a>
+                </form>
+            </div>
+            <div id="visited-article-text-div">
+                <h:outputText value="{articleController.visitedArticle.text}" escape="false"/>
+            </div>
+        </article>
+    </div>-->

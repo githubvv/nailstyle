@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <section id="text" style="background-color: #333;" class="text-page section-inverse">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <form jsf:id="user-article-form">
+                        <f:param name="pageNumb"/>
+                        <ui:fragment id="visitor-articlelist-fragment" rendered="#{!articleController.showVisitedArticle}">
+                            <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <h:commandLink action="#{articleController.pageNavigator.prevPage()}">Назад
+                                        <f:ajax execute="@this" render="@form"/>
+                                    </h:commandLink>
+                                </li>
+                                <ui:repeat var="page" value="#{articleController.pageNavigator.pageNumbers}" varStatus="varStatus">
+                                    <li>
+                                        <h:commandLink style="#{(articleController.pageNavigator.selectedPageNumber == varStatus.index+1)?'color: #444444; background-color: #919191; border-color: #dddddd;':''}">#{page}
+                                            <f:setPropertyActionListener value="#{page}"
+                                                                         target="#{articleController.pageNavigator.selectedPageNumber}"/>
+                                            <f:ajax execute="@this" render="@form"/>
+                                        </h:commandLink>
+                                    </li>
+                                </ui:repeat>
+                                <li>
+                                    <h:commandLink action="#{articleController.pageNavigator.nextPage()}">Далее
+                                        <f:ajax execute="@this" render="@form"/>
+                                    </h:commandLink>
+                                </li>
+                            </ul>
+                            </nav>
+                            <div class="row">
+                                <ui:repeat value="#{articleController.articleList}" var="curentArticle" varStatus="curentVarStatus">
+                                    <div class="col-sm-4">
+                                        <div class="icon"><i class="fa fa-newspaper-o fa-4x"></i></div>
+                                        <div class="box">
+                                            <h4>#{curentArticle.name}</h4><span>#{curentArticle.date}</span>
+                                            <p>#{curentArticle.description}</p>
+                                        </div>
+                                        <button jsf:id="read-article-link#{curentVarStatus}" type="button"
+                                                class="btn btn-default">Читать
+                                            <f:setPropertyActionListener value="#{curentArticle}"
+                                                                         target="#{articleController.visitedArticle}"/>
+                                            <f:setPropertyActionListener value="#{true}"
+                                                                         target="#{articleController.showVisitedArticle}"/>
+                                            <f:ajax execute="@this" render="@form"/>
+                                        </button>
+                                    </div>
+                                </ui:repeat>
+                            </div>
+                        </ui:fragment>
+                        <ui:fragment id="visited-article-fragment" rendered="#{articleController.showVisitedArticle}">
+                            <ui:include src="/templateBlocks/visitor/content/visited-article.xhtml"/>
+                        </ui:fragment>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</ui:composition>
+

@@ -1,0 +1,13 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <form jsf:id="author-form" class="sign-up">
+        <h1 class="sign-up-title">Авторизация</h1>
+        <input jsf:id="login-input" jsf:value="#{authorization.userName}" class="sign-up-input" placeholder="Логин" autofocus="" type="text"/>
+        <input jsf:id="password-input" jsf:value="#{authorization.userPassword}" class="sign-up-input" placeholder="Пароль" type="password"/>
+        <input jsf:id="enter-btn" jsf:action="#{authorization.login}" type="submit" value="Войти!" class="sign-up-button"/>
+        <h:messages styleClass="authorization-error" id="messages-login"/>
+    </form>
+ </ui:composition>
