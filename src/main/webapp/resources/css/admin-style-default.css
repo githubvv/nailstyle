@@ -4,6 +4,7 @@
 
 .btn-act{
     margin-right: 10px;
+    margin-top: 5px;
 }
 
 .admin-textArea{
@@ -30,6 +31,12 @@
 
 .img-in-update-window{
     margin: 10px;
+}
+
+.article-text img{
+    float: right;
+    -webkit-box-shadow: 5px 5px 5px #580202;
+    box-shadow: 5px 5px 5px #580202;
 }
 
 

@@ -1,10 +1,4 @@
-package controllers.admin;
-
-import beans.PageNavigator;
-import controllers.app.LoadContextHolder;
-import db.entity.Gallery;
-import db.exceptions.PersistException;
-import services.GalleryService;
+package main.java.controllers.admin;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -18,34 +12,34 @@ import java.util.List;
 
 @ManagedBean(name = "adminGalleryController")
 @SessionScoped
-public class AdminGalleryController extends AbstractModeController<Gallery> implements Serializable {
+public class AdminGalleryController extends controllers.admin.AbstractModeController<db.entity.Gallery> implements Serializable {
     private Part fileFull;
-    private PageNavigator pageNavigator;
+    private beans.PageNavigator pageNavigator;
 
     @ManagedProperty(value = "#{galleryService}")
-    private GalleryService galleryService;
+    private services.GalleryService galleryService;
 
     @ManagedProperty(value = "#{loadContextHolder}")
-    private LoadContextHolder loadContextHolder;
+    private controllers.app.LoadContextHolder loadContextHolder;
 
     public AdminGalleryController() {
-        this.pageNavigator = ((LoadContextHolder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("loadContextHolder")).getDefaultPageNav("db.entity.Gallery");
+        this.pageNavigator = ((controllers.app.LoadContextHolder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("loadContextHolder")).getDefaultPageNav("db.entity.Gallery");
     }
 
     //GETTERS SETTERS
-    public PageNavigator getPageNavigator() {
+    public beans.PageNavigator getPageNavigator() {
         return pageNavigator;
     }
 
-    public void setPageNavigator(PageNavigator pageNavigator) {
+    public void setPageNavigator(beans.PageNavigator pageNavigator) {
         this.pageNavigator = pageNavigator;
     }
 
-    public LoadContextHolder getLoadContextHolder() {
+    public controllers.app.LoadContextHolder getLoadContextHolder() {
         return loadContextHolder;
     }
 
-    public void setLoadContextHolder(LoadContextHolder loadContextHolder) {
+    public void setLoadContextHolder(controllers.app.LoadContextHolder loadContextHolder) {
         this.loadContextHolder = loadContextHolder;
     }
 
@@ -57,24 +51,24 @@ public class AdminGalleryController extends AbstractModeController<Gallery> impl
         this.fileFull = fileFull;
     }
 
-    public GalleryService getGalleryService() {
+    public services.GalleryService getGalleryService() {
         return galleryService;
     }
 
-    public void setGalleryService(GalleryService galleryService) {
+    public void setGalleryService(services.GalleryService galleryService) {
         this.galleryService = galleryService;
     }
 
     @Override
     public void setNewObjForSelectedObj() {
-        setSelectedObject(new Gallery());
+        setSelectedObject(new db.entity.Gallery());
     }
 
-    public List<Gallery> getGalleryList() {
-        List<Gallery> pictures = null;
+    public List<db.entity.Gallery> getGalleryList() {
+        List<db.entity.Gallery> pictures = null;
         try {
             pictures = galleryService.getPictures(pageNavigator);
-        } catch (PersistException e) {
+        } catch (db.exceptions.PersistException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
         return pictures;
@@ -96,8 +90,8 @@ public class AdminGalleryController extends AbstractModeController<Gallery> impl
                 if (fileFull != null) {
                     getSelectedObject().setPath(getFileName(fileFull));
                     fileFull = null;
-                    galleryService.updatePicToDB(getSelectedObject());
                 }
+                galleryService.updatePicToDB(getSelectedObject());
             } else if (isRemoveModeView()) {
                 String pathThumbs = null;
                 String pathFulls = loadContextHolder.getPropValues("path_fulls") + "/" + getSelectedObject().getPath();
@@ -105,9 +99,10 @@ public class AdminGalleryController extends AbstractModeController<Gallery> impl
                 galleryService.removePicFromDB(getSelectedObject().getId());
             }
             galleryService.rebootCache();
+            this.pageNavigator = ((controllers.app.LoadContextHolder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("loadContextHolder")).getDefaultPageNav("db.entity.Gallery");
             fileFull=null;
             cancelModes();
-        } catch (PersistException e) {
+        } catch (db.exceptions.PersistException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
     }
@@ -132,7 +127,7 @@ public class AdminGalleryController extends AbstractModeController<Gallery> impl
         String pathToFile = loadContextHolder.getPropValues("absolute_fulls_path") + "/" + getFileName(fileFull);
         try {
             galleryService.uploadFile(pathToFile, fileFull);
-        } catch (PersistException e) {
+        } catch (db.exceptions.PersistException e) {
             FacesContext.getCurrentInstance().addMessage("gallery-form", new FacesMessage(e.getMessage()));
         }
     }
@@ -143,7 +138,7 @@ public class AdminGalleryController extends AbstractModeController<Gallery> impl
             try {
                 galleryService.removeFile(pathToFile);
 
-            } catch (PersistException e) {
+            } catch (db.exceptions.PersistException e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
             }
         }

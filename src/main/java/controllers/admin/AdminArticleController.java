@@ -1,11 +1,4 @@
-package controllers.admin;
-
-import beans.PageNavigator;
-import controllers.app.LoadContextHolder;
-import db.entity.Article;
-import db.entity.ArticleImages;
-import db.exceptions.PersistException;
-import services.ArticleService;
+package main.java.controllers.admin;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,26 +13,26 @@ import java.util.List;
 
 @ManagedBean(name = "adminArticleController")
 @SessionScoped
-public class AdminArticleController extends AbstractModeController<Article> implements Serializable {
+public class AdminArticleController extends controllers.admin.AbstractModeController<db.entity.Article> implements Serializable {
 
     private Part file;
     private List<String> fileNames = new ArrayList<>();
 
     @ManagedProperty(value = "#{articleService}")
-    private ArticleService articleService;
+    private services.ArticleService articleService;
 
-    private PageNavigator pageNavigator;
+    private beans.PageNavigator pageNavigator;
 
     public AdminArticleController() {
 
-        this.pageNavigator = ((LoadContextHolder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("loadContextHolder")).getDefaultPageNav("db.entity.Article");
+        this.pageNavigator = ((controllers.app.LoadContextHolder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("loadContextHolder")).getDefaultPageNav("db.entity.Article");
     }
 
-    public PageNavigator getPageNavigator() {
+    public beans.PageNavigator getPageNavigator() {
         return pageNavigator;
     }
 
-    public void setPageNavigator(PageNavigator pageNavigator) {
+    public void setPageNavigator(beans.PageNavigator pageNavigator) {
         this.pageNavigator = pageNavigator;
     }
 
@@ -51,24 +44,24 @@ public class AdminArticleController extends AbstractModeController<Article> impl
         this.file = file;
     }
 
-    public ArticleService getArticleService() {
+    public services.ArticleService getArticleService() {
         return articleService;
     }
 
-    public void setArticleService(ArticleService articleService) {
+    public void setArticleService(services.ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @Override
     public void setNewObjForSelectedObj() {
-        setSelectedObject(new Article());
+        setSelectedObject(new db.entity.Article());
     }
 
-    public List<Article> getArticleList() {
-        List<Article> articles = null;
+    public List<db.entity.Article> getArticleList() {
+        List<db.entity.Article> articles = null;
         try {
             articles = articleService.getArticles(pageNavigator);
-        } catch (PersistException e) {
+        } catch (db.exceptions.PersistException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
         return articles;
@@ -83,7 +76,7 @@ public class AdminArticleController extends AbstractModeController<Article> impl
         }
     }
 
-    public void removeImgFromArticle(ArticleImages articleImages) throws PersistException {
+    public void removeImgFromArticle(db.entity.ArticleImages articleImages) throws db.exceptions.PersistException {
         if (articleImages != null)
             articleService.removeImgFromArticle(getSelectedObject(), articleImages);
     }
@@ -106,10 +99,11 @@ public class AdminArticleController extends AbstractModeController<Article> impl
                 articleService.removeArtFromDB(getSelectedObject());
             }
             articleService.rebootCache();
+            this.pageNavigator = ((controllers.app.LoadContextHolder) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("loadContextHolder")).getDefaultPageNav("db.entity.Article");
             file = null;
             fileNames.clear();
             cancelModes();
-        } catch (PersistException e) {
+        } catch (db.exceptions.PersistException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
         }
     }
@@ -119,7 +113,7 @@ public class AdminArticleController extends AbstractModeController<Article> impl
             for (String fileName : fileNames) {
                 try {
                     articleService.removeImgFromIO(fileName);
-                } catch (PersistException e) {
+                } catch (db.exceptions.PersistException e) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
                 }
             }

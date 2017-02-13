@@ -107,9 +107,9 @@ section {
     transform: translate(0, 0);
   }
 }
-.services .box {
+/*.services .box {
   margin-top: 20px;
-}
+}*/
 .services .icon {
   font-size: 50px;
 }
@@ -1015,6 +1015,16 @@ section#text {
 
 .contacts-label-2{
     font-size: 20px;
+}
+
+.article-text img{
+    float: right;
+    -webkit-box-shadow: 5px 5px 5px #580202;
+    box-shadow: 5px 5px 5px #580202;
+}
+
+img.img-responsive{
+    display: initial;
 }
 
 
